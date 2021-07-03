@@ -1,7 +1,8 @@
 from scenic.simulators.sumo.model import *
 
 ego = Car at 2 @ 0
-
+ego.name = "bob"
+ego.route = '["e1", "e3"]'
 Pedestrian at 2 @ 2, facing 0 deg
 car2 = Car at 1 @ 2, facing 0 deg, with viewAngle 30 deg
 
