@@ -10,24 +10,20 @@ sumoCmd = [sumoBinary, "-c", "Map\\TwoWayJunction\\TwoWayJunction.sumocfg"]
 
 traci.start(sumoCmd)
 count = 0
-trip = "trip" + count
+trip = "trip" + str(count)
 
 #Creates all the routes
 for x in scene[0].objects:
-    traci.route.add(trip, scene[0].objects[x].route)
+    trip = "trip" + str(count)
+    traci.route.add(trip, x.route)
+    count += 1
 
+count = 0
+#Creates all vehicles and places them on routes
 for x in scene[0].objects:
-
-#Objects get added to the front of the tuple
-print(scene[0].objects[1].route)
-
-#Creates the routes for the vehicle to follow
-traci.route.add("topTrip", scene[0].objects[1].route)
-traci.route.add("bottomTrip", scene[0].objects[0].route)
-
-#Creates the vehicle and assigns the trip to the vehicle
-traci.vehicle.add(scene[0].objects[1].name, "topTrip")
-traci.vehicle.add(scene[0].objects[0].name, "bottomTrip")
+    trip = "trip" + str(count)
+    traci.vehicle.add(x.name, trip)
+    count += 1
 
 #sets the top actor x units ahead
 traci.vehicle.moveTo(scene[0].objects[1].name, 'e1_0', scene[0].objects[1].distance)
