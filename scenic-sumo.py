@@ -9,6 +9,14 @@ sumoBinary = 'sumo-gui'
 sumoCmd = [sumoBinary, "-c", "Map\\TwoWayJunction\\TwoWayJunction.sumocfg"]
 
 traci.start(sumoCmd)
+count = 0
+trip = "trip" + count
+
+#Creates all the routes
+for x in scene[0].objects:
+    traci.route.add(trip, scene[0].objects[x].route)
+
+for x in scene[0].objects:
 
 #Objects get added to the front of the tuple
 print(scene[0].objects[1].route)
