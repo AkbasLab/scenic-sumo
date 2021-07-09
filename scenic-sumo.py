@@ -2,11 +2,11 @@ import os, sys
 import scenic
 import traci
 
-scenario = scenic.scenarioFromFile("C:\\Users\\crump\\OneDrive\\Documents\\GitHub\\Scenic-Sumo\\behindCarWithPedestrian.scenic")
+scenario = scenic.scenarioFromFile("C:\\Users\\crump\\OneDrive\\Documents\\GitHub\\Scenic-Sumo\\Scenarios\\FourWayIntersection.scenic")
 
 scene = scenario.generate(maxIterations = 1, verbosity = 0, feedback = None)
 sumoBinary = 'sumo-gui'
-sumoCmd = [sumoBinary, "-c", "Map\\TwoWayJunction\\TwoWayJunction.sumocfg"]
+sumoCmd = [sumoBinary, "-c", "Map\\FourWayIntersection\\FourWayIntersection.sumocfg"]
 
 traci.start(sumoCmd)
 count = 0
