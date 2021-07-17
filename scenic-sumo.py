@@ -1,16 +1,28 @@
 import os, sys
 import scenic
 import traci
+import argparse
 
-def connectScenicSumo():
-    scenario = scenic.scenarioFromFile("C:\\Users\\crump\\OneDrive\\Documents\\GitHub\\Scenic-Sumo\\Scenarios\\FourWayIntersection.scenic")
+def getAruments():
+    parser = argparse.ArgumentParser(description='Get files for scenic and sumo-gui')
+    parser.add_argument('-sc', type = str, help = 'Scenic File name')
+    parser.add_argument('-so', type = str, help = 'Sumo File name')
+    args = parser.parse_args()
+    return args
+
+def connectScenicSumo(args):
+    scenario = scenic.scenarioFromFile("C:\\Users\\crump\\OneDrive\\Documents\\GitHub\\Scenic-Sumo\\Scenarios\\" + args.sc)
 
     scene = scenario.generate(maxIterations = 1, verbosity = 0, feedback = None)
     sumoBinary = 'sumo-gui'
-    sumoCmd = [sumoBinary, "-c", "Map\\FourWayIntersection\\FourWayIntersection.sumocfg"]
+    folderName = args.so.split(".")
+    sumoCmd = [sumoBinary, "-c", "Map\\" + folderName[0] + "\\" + args.so]
     traci.start(sumoCmd)
 
-    return scene
+    return scene  
+
+def createPedestrian(x):
+    print("hello there")
 
 def createTrafficLight(x):
     states = str(x.state)
@@ -38,9 +50,8 @@ def createCar(count, x):
         road = road.split("'")
         traci.vehicle.moveTo(x.name, road[1] + '_' + str(x.lane), x.distance)
 
-def iterateScene():
+def iterateScene(scene):
     count = 0   
-    scene = connectScenicSumo()
 
     for x in scene[0].objects:
         print(type(x))
@@ -57,6 +68,9 @@ def iterateScene():
         if str(type(x)) == "<class 'scenic.simulators.sumo.model.TrafficLight'>":
             createTrafficLight(x)
 
+        if str(type(x)) == "<class 'scenic.simulators.sumo.model.Pedestrian'>":
+            createPedestrian(x)
+
 def runSimulation():
     #Runs simulation to completion
     while traci.simulation.getMinExpectedNumber() > 0:
@@ -65,4 +79,7 @@ def runSimulation():
     traci.close()
 
 if __name__ == '__main__':
+    args = getAruments()
+    scene = connectScenicSumo(args)
+    iterateScene(scene)
     runSimulation()
