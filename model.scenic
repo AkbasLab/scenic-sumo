@@ -25,6 +25,7 @@ class Car:
     changeSpeed: ""
     tau: 0
     carParam: 0
+    parkPos: ""
 
 class TrafficLight:
     """TrafficLight"""

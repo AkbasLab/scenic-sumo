@@ -3,6 +3,7 @@ import traci
 import argparse
 import config
 import os
+import xml.etree.ElementTree as xml
 
 def getAruments():
     parser = argparse.ArgumentParser(description='Get files for scenic and sumo-gui')
@@ -14,7 +15,9 @@ def getAruments():
 def connectScenicSumo(args : argparse.Namespace):
     scenario = scenic.scenarioFromFile(os.path.join("Scenarios", args.sc))
     scene = scenario.generate(maxIterations = 1, verbosity = 0, feedback = None)
-    
+
+    checkForParkingLot(scene)
+
     folderName = args.so.split(".")
     sumoCmd = setSumoParam(folderName)
     
@@ -22,76 +25,103 @@ def connectScenicSumo(args : argparse.Namespace):
 
     return scene  
 
-def createPedestrian(x):
+def checkForParkingLot(scene):
+    for scenicObj in scene[0].objects:
+        if str(type(scenicObj)) == "<class 'scenic.simulators.sumo.model.ParkingLot'>":
+            createParkingLot(scenicObj)
 
-    traci.person.add(x.name, x.route[0], x.distance, depart = x.departTime)
-    traci.person.appendWalkingStage(x.name, x.route, x.arrivalPos)
-    traci.person.setWidth(x.name, 1)
-    traci.person.setLength(x.name, .5)
+def createPedestrian(scenicObj):
 
-def createTrafficLight(x):
-    states = x.state.split(",")
-    duration = x.duration.split(",")
+    traci.person.add(scenicObj.name, scenicObj.route[0], scenicObj.distance, depart = scenicObj.departTime)
+    traci.person.appendWalkingStage(scenicObj.name, scenicObj.route, scenicObj.arrivalPos)
+    traci.person.setWidth(scenicObj.name, 1)
+    traci.person.setLength(scenicObj.name, .5)
 
-    phases = []
-    for y in range(0, len(states)):
-        phases.append(traci.trafficlight.Phase(int(duration[y]), states[y]))
+def createTrafficLight(scenicObj):
 
-    trafficData = traci.trafficlight.Logic(x.name, 0 , 0, phases)
-    traci.trafficlight.setCompleteRedYellowGreenDefinition(x.name, trafficData)
+    if type(scenicObj.state) == str and type(scenicObj.duration) == str:
+        states = scenicObj.state.split(",")
+        duration = scenicObj.duration.split(",")
+        phases = []
+        for y in range(0, len(states)):
+            phases.append(traci.trafficlight.Phase(int(duration[y]), states[y]))
 
-def createCar(count : int, x):
+        trafficData = traci.trafficlight.Logic(scenicObj.name, 0 , 0, phases)
+        traci.trafficlight.setCompleteRedYellowGreenDefinition(scenicObj.name, trafficData)
+    else:
+        print("Enter traffic light state and duration as string")
+
+def createRandomCar(road: str, scenicObj):
+   
+    if scenicObj.randomDistance <= traci.lane.getLength(road[1] + '_' + str(scenicObj.lane)):
+        traci.vehicle.moveTo(scenicObj.name, road[1] + '_' + str(scenicObj.lane), scenicObj.randomDistance)
+    else:
+        print("Scenic Object: randomDistance range is out of bounds of road.")  
+
+    if scenicObj.randomSpeed >= 0:  
+        traci.vehicle.setSpeed(scenicObj.name, scenicObj.randomSpeed)  
+    else:
+        print("Scenic Object: randomSpeed range is out of bounds.")    
+
+def createCar(count : int, scenicObj):
     trip = "trip" + str(count)
 
-    traci.route.add(trip, x.route)
-    traci.vehicle.add(x.name, trip)
+    traci.route.add(trip, scenicObj.route)
+    traci.vehicle.add(scenicObj.name, trip)
 
-    road = str(x.route)
+    road = str(scenicObj.route)
     road = road.split("'")
 
-    if x.track == 1:
-        traci.gui.track(x.name)
+    if str(type(scenicObj)) == "<class '__main__.RandomCar'>":
+        createRandomCar(road, scenicObj)
 
-    if x.distance != 0:
-        traci.vehicle.moveTo(x.name, road[1] + '_' + str(x.lane), x.distance)
+    if scenicObj.track == 1:
+        traci.gui.track(scenicObj.name)
 
-    if x.xPos != 0 or x.yPos != 0:
-        traci.vehicle.moveToXY(x.name, road, x.lane,  x.xPos, x.yPos, angle = x.angle, keepRoute = x.vehPlacement)
+    if scenicObj.distance != 0:
+        traci.vehicle.moveTo(scenicObj.name, road[1] + '_' + str(scenicObj.lane), scenicObj.distance)
+
+    if scenicObj.xPos != 0 or scenicObj.yPos != 0:
+        traci.vehicle.moveToXY(scenicObj.name, road, scenicObj.lane,  scenicObj.xPos, 
+                               scenicObj.yPos, angle = scenicObj.angle, keepRoute = scenicObj.vehPlacement)
     
-    if x.speed != -1:
-        traci.vehicle.setSpeed(x.name, x.speed)
+    if scenicObj.speed != -1:
+        traci.vehicle.setSpeed(scenicObj.name, scenicObj.speed)
 
-    if x.speedMode != "":
-        traci.vehicle.setSpeedMode(x.name, x.speedMode)
+    if scenicObj.speedMode != "":
+        traci.vehicle.setSpeedMode(scenicObj.name, scenicObj.speedMode)
 
-    if x.color != "":
-        traci.vehicle.highlight(x.name, x.color, size = x.size)
+    if scenicObj.color != "":
+        traci.vehicle.highlight(scenicObj.name, scenicObj.color, size = scenicObj.size)
 
-    if x.changeSpeed != "":
-        traci.vehicle.slowDown(x.name, x.changeSpeed[0], x.changeSpeed[1])
+    if scenicObj.changeSpeed != "":
+        traci.vehicle.slowDown(scenicObj.name, scenicObj.changeSpeed[0], scenicObj.changeSpeed[1])
     
-    if x.tau != 0:
-        traci.vehicle.setTau(x.name, x.tau)
+    if scenicObj.tau != 0:
+        traci.vehicle.setTau(scenicObj.name, scenicObj.tau)
     
-    if x.carParam != 0:
-        traci.vehicle.setParameter(x.name, "junctionModel.ignoreTypes", "DEFAULT_VEHTYPE")
+    if scenicObj.carParam != 0:
+        traci.vehicle.setParameter(scenicObj.name, "junctionModel.ignoreTypes", "DEFAULT_VEHTYPE")
+    
+    if scenicObj.parkPos != "":
+        traci.vehicle.setParkingAreaStop(scenicObj.name, scenicObj.parkPos[0], duration = scenicObj.parkPos[1])
 
+    print(scenicObj.name + " __speed__:" + str(scenicObj.randomSpeed) + "__distance__" + str(scenicObj.randomDistance))
+    
 def iterateScene(scene : tuple):
     count = 0   
-    for x in scene[0].objects:
-        if str(type(x)) == "<class 'scenic.simulators.sumo.model.Car'>":
-            createCar(count, x)
+    for scenicObj in scene[0].objects:
+        if str(type(scenicObj)) == "<class 'scenic.simulators.sumo.model.Car'>" or \
+           str(type(scenicObj)) == "<class '__main__.RandomCar'>":
+            createCar(count, scenicObj)
             count += 1
 
-        if str(type(x)) == "<class 'scenic.simulators.sumo.model.Biker>":
-            print("Not Yet Implemented")
+        if str(type(scenicObj)) == "<class 'scenic.simulators.sumo.model.TrafficLight'>":
+            createTrafficLight(scenicObj)
 
-        if str(type(x)) == "<class 'scenic.simulators.sumo.model.TrafficLight'>":
-            createTrafficLight(x)
+        if str(type(scenicObj)) == "<class 'scenic.simulators.sumo.model.Pedestrian'>":
+            createPedestrian(scenicObj)
 
-        if str(type(x)) == "<class 'scenic.simulators.sumo.model.Pedestrian'>":
-            createPedestrian(x)
-            
 def runSimulation():
     while traci.simulation.getMinExpectedNumber() > 0:
         traci.simulation.step()
@@ -117,7 +147,20 @@ def setSumoParam(folderName : str):
             cmd.append(str(val))
     return cmd
 
-if __name__ == '__main__':
+def createParkingLot(scenicObj):
+    root = xml.Element("additional")
+
+    xml.SubElement(root,"parkingArea", id=scenicObj.name, lane=scenicObj.lane,startPos=str(scenicObj.startPos), 
+                endPos=str(scenicObj.endPos),roadsideCapacity=str(scenicObj.capacity),angle=str(scenicObj.angle),
+                length="5").text
+
+    xml.SubElement(root, "vType", id="example", 
+                maneuverAngleTimes="10 3.0 4.0,80 1.6 11.0,110 11.0 2.0,170 8.1 3.0,181 3.0 4.0")
+
+    tree = xml.ElementTree(root)
+    tree.write("parkinglot.net.xml")
+
+if __name__ == '__main__': 
     args = getAruments()
     scene = connectScenicSumo(args)
     iterateScene(scene)
