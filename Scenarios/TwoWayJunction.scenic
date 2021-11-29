@@ -2,7 +2,7 @@ from scenic.simulators.sumo.model import *
 
 class RandomCar(Car): 
     """Random distance"""
-    randomDistance: Range(0,995)
+    randomDistance: Range(0,1000)
     randomSpeed: Range(0,100)
 
 ego = RandomCar at 0 @ 2
