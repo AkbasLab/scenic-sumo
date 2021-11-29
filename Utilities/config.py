@@ -10,10 +10,13 @@ SUMO = {
     "--collision.stoptime": 50,
 
     # Logging
-    ##"--error-log" : "log/error-log.txt",
+    "--error-log" : "Utilities/error-log.txt",
 
     # Smooth lane changing
     "--lanechange.duration": 2,
+
+    #Random trips
+    #"-r":"Utilities/trips.trips.xml",
 
     # Split lanes
     #"--lateral-resolution" : "5.5",
@@ -23,7 +26,7 @@ SUMO = {
     ##"--remote-port" : 5522,
 
     # Parking Options
-    #"--additional-files" : "parkinglot.net.xml",
+    #"--additional-files" : "Utilities/parkinglot.net.xml",
     #"--parking.maneuver" : True,
 
     # GUI Options

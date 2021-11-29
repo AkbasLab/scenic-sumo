@@ -25,6 +25,8 @@ class Car:
     changeSpeed: ""
     tau: 0
     carParam: 0
+    laneMode: 0
+    laneChanges: ""
     parkPos: ""
 
 class TrafficLight:
@@ -41,3 +43,12 @@ class Pedestrian:
     departTime: 0
     distance: 0
     arrivalPos: 10
+
+class ParkingLot:
+    """Parking Lot"""
+    name: ""
+    lane: ""
+    startPos: 0
+    endPos: 0
+    capacity: 0 
+    angle: 90
