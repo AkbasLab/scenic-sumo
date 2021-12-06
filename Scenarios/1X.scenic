@@ -1,5 +1,7 @@
 from scenic.simulators.sumo.model import *
 
+'''Using 1X.sumocfg'''
+
 ego = Car at 0 @ 0
 ego.name = "v1"
 ego.route = ["gneE0","-gneE2"]

@@ -1,10 +1,6 @@
 from scenic.simulators.sumo.model import *
 
-'''
-NPC1 is on the side of, and ahead of the DUT,
-when NPC1 changes into DUT's lane. NPC1 may or
-may not accelerate.
-'''
+'''Using CurvyRoad.sumocfg'''
 
 ego = Car at 0 @ 0
 ego.name = "v1"

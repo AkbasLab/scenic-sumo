@@ -1,6 +1,8 @@
 from scenic.simulators.sumo.model import *
 #from scenic.core.distributions import *
 
+'''Using CurvyRoad.sumocfg'''
+
 ego = Car at 0 @ 0 
 ego.name = "v1"
 ego.route = ["492300616#0", "159453012"]

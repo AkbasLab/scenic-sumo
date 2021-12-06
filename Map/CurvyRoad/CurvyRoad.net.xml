@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- generated on 2021-11-14 21:43:59 by Eclipse SUMO netedit Version 1.9.2
+<!-- generated on 2021-12-05 18:23:16 by Eclipse SUMO netedit Version 1.9.2
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
-        <sumo-net-file value="Campus.net.xml"/>
+        <sumo-net-file value="C:\Users\crump\OneDrive\Documents\GitHub\Scenic-Sumo\Map\ThreeLane\ThreeLane.net.xml"/>
     </input>
 
     <output>
-        <output-file value="C:\Users\crump\OneDrive\Documents\GitHub\Scenic-Sumo\Map\ThreeLane\ThreeLane.net.xml"/>
+        <output-file value="C:\Users\crump\OneDrive\Documents\GitHub\Scenic-Sumo\Map\ThreeLane\CurveyRoad.net.xml"/>
     </output>
 
     <processing>

@@ -1,8 +1,6 @@
 SUMO = {
     
     "gui" : True,
-    # Street network
-    #"--net-file" : "Map/FourWayIntersection/FourWayIntersection.net.xml",
     
     #Collisions
     "--collision.action" : "warn",
