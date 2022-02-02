@@ -11,6 +11,8 @@ Dr. Mustafa Ilhan Akbas `akbasm@erau.edu`<br>
 
 **Phd. Students:**<br>
 Quentin Goss `gossq@my.erau.edu`<br>
+
+**Undergraduate Students:**<br>
 Luke Crump `crumpl@my.erau.edu`
 
 Department of Electrical Engineering and Computer Science, Embry-Riddle Aeronautical University <br>
