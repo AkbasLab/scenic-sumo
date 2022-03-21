@@ -4,10 +4,13 @@ import traci
 
 scenario = scenic.scenarioFromFile("C:\\Your\\Path\\To\\scenic\\file.scenic")
 
+#Grabs scene from the scenario
 scene = scenario.generate(maxIterations = 1, verbosity = 0, feedback = None)
+#Activates the gui parameter
 sumoBinary = 'sumo-gui'
+#Creates a command array
 sumoCmd = [sumoBinary, "-c", "Your\\Path\\To\\sumo\\file.sumocfg"]
-
+#Runs command array
 traci.start(sumoCmd)
 
 #Objects get added to the front of the tuple
