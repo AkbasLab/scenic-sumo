@@ -1,4 +1,4 @@
-SUMO = {
+'''SUMO = {
     
     "gui" : True,
     
@@ -33,4 +33,4 @@ SUMO = {
 
     # RNG
     #"--seed" : 333
-}
+}'''

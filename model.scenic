@@ -5,8 +5,9 @@ width = 10
 length = 10
 workspace = Workspace(RectangularRegion(0 @ 0, 0, width, length))
 
-#Types of Objects
+param bob = None
 
+#Types of Objects
 class Car:
     """Car"""
     name: ""
@@ -25,9 +26,10 @@ class Car:
     changeSpeed: ""
     tau: 0
     carParam: 0
-    laneMode: 0
-    laneChanges: ""
     parkPos: ""
+    laneMode = 0
+    laneChanges = ""
+    routeID: ""
 
 class TrafficLight:
     """TrafficLight"""
@@ -52,3 +54,14 @@ class ParkingLot:
     endPos: 0
     capacity: 0 
     angle: 90
+
+class RandomTrips:
+    """Creates random cars that drive around the simulation"""
+    minDistance: 0
+    maxDistance: 0
+    spawnPeriod: 15
+
+class RandomCar(Car): 
+    """Random distance"""
+    randomDistance: Range(0,1000)
+    randomSpeed: Range(0,100)

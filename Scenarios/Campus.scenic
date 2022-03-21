@@ -20,3 +20,5 @@ NPC1.color = [255,0,0,255]
 NPC1.laneMode = 512
 NPC1.laneChanges = [1 ,30]
 NPC1.track = 1
+
+random = RandomTrips at 0 @ 4

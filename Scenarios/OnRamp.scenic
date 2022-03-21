@@ -13,12 +13,13 @@ class RandomCar(Car):
 ego = Car at 0 @ 0
 ego.name = "v1"
 ego.route = ["482125987#1", "83336631#1"]
-'''
+
 randomCar = RandomCar at 0 @ 4
 randomCar.name = "v3"
 randomCar.route = ["11355503", "83336631#1"]
 randomCar.speedMode = 32
-'''
+randomCar.track = 1
+
 car1 = Car at 0 @ 2
 car1.name = "v2"
 car1.route = ["11355503","87853223#3"]
