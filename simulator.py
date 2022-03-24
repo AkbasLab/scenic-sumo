@@ -34,9 +34,6 @@ class SumoSimulator:
         self.scenario_number += 1
         return SumoSimulation(self.scenario_number, self.map_File, self.scenic_file, self.sumo_config)
 
-    def __destroy(self):
-        return super().destroy()
-
 class SumoSimulation:
     
     __vehicle_list = []
