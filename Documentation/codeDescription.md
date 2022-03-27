@@ -20,7 +20,8 @@ This contains the base values for all scenic scenarios. If a car is created than
 
 ### Interface.py  
 This creates all the user interfaces. The sumo configurator scene needs to be saved before running any simulation.  
-![alt text]()
+![alt text](https://github.com/AkbasLab/scenic-sumo/blob/main/Documentation/Pictures/SumoScenicHome.PNG)  
+
 
 ### Config.py
 This is the command line options for SUMO. This file dictates what is available in the *Sumo Configurator* scene. If the line is commented out in the *Config.py* file than it will not appear in the scene. To find more arguments for this file go [here](https://github.com/AkbasLab/scenic-sumo/blob/main/Documentation/sumo-help.txt).
