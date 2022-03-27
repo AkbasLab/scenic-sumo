@@ -62,7 +62,7 @@ class Interface:
 
         window.close()
 
-    def __sumoConfigWindow(self):
+    def __sumoConfigWindow(self) -> sg.Window:
         """Creates the interface for the sumo configuration window.
 
         Returns:

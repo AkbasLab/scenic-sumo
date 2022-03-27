@@ -1,12 +1,12 @@
 # SumoSimulator
 ### Description 
-SumoSimulator creates an object that has the map, scenic file, and config file. It creates the simulations and passes them to the scenario information.  
+`SumoSimulator` creates an object that has the map, scenic file, and config file. It creates the simulations and passes them to the scenario information.  
 ### Syntax  
 `simulator(map, scene, config)`
 ### Parameters
-`map`: str: the *.sumocfg file for the map  
-`scene`: str: the *.scenic file for the scenario chosen  
-`config`: dict: the dict variable with the desired sumo commands  
+`map`: str: *.sumocfg file for the map  
+`scene`: str: *.scenic file for the scenario chosen  
+`config`: dict: sumo commands  
 ### Returns  
 None
 
@@ -28,10 +28,10 @@ None
 #### Syntax  
 `simulation(scen_num, map, scene, config)`  
 ### Parameters  
-`scen_num`: int:  the scene number  
-`map`: str: the *.sumocfg file for the map  
-`scene`: str: the *.scenic file for the scenario chosen  
-`config`: dict: a dict of desired sumo commands  
+`scen_num`: int: scene number  
+`map`: str: *.sumocfg file for the map  
+`scene`: str: *.scenic file for the scenario chosen  
+`config`: dict: sumo commands  
 ### Returns  
 None  
 
@@ -42,8 +42,8 @@ None
 ### Sytax  
 `checkForUtilities(scene, folder_name)`  
 ### Parameters  
-`scene`: tuple: list of the actors in the scene  
-`folder_name`: str: the folder containing the map  
+`scene`: tuple: actors in the scene  
+`folder_name`: str: folder containing the map  
 ### Returns  
 None 
   
@@ -65,10 +65,10 @@ None
 ### Syntax  
 `setSumoParam(sumo_file, sumo_config)`  
 ### Parameters  
-`sumo_file`: str: the sumo file name  
-`sumo_config`: dict: list of commands to control the Sumo interface  
+`sumo_file`: str: sumo file name  
+`sumo_config`: dict: commands to control the Sumo interface  
 ### Returns  
-:list: A list of commands for the Sumo interface.  
+:list: commands for the Sumo interface.  
 
 ---
 ## iterateScene()  
@@ -77,7 +77,7 @@ None
 ### Syntax  
 `iterateScene(scene)`  
 ### Parameters  
-`scene`: tuple: list of all the actors in the Scenic scene  
+`scene`: tuple: actors in the Scenic scene  
 ### Returns  
 None  
 
@@ -100,7 +100,7 @@ None
 ### Syntax  
 `createRandomCar(road, scenicObj)`  
 ### Parameters  
-`road`: str: the edge which the car spawns on  
+`road`: str: edge which the car spawns on  
 `scenicObj`: ___main___.RandomCar: object containing information to create a car with random values  
 ### Returns  
 None  

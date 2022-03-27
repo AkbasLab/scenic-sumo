@@ -15,7 +15,7 @@ SUMO = {
 
     #Random trips
     #"-r":"Utilities/trips.trips.xml",
-
+    "-r": "trips.trips.xml",
     # Split lanes
     #"--lateral-resolution" : "5.5",
 

@@ -3,8 +3,6 @@ Luke Crump 1/2/2022
 @crumpl07
 '''
 
-print("League of legends")
-
 try:
     import traci
 except ImportError as e:
