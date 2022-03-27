@@ -19,9 +19,14 @@ Utility files are also called from *SumoSimulation*. Utility files are files tha
 This contains the base values for all scenic scenarios. If a car is created than it will have all the defualt values of the object in this file. The name and the route of every object must be given for SUMO to run properly. 
 
 ### Interface.py  
-This creates all the user interfaces. The sumo configurator scene needs to be saved before running any simulation.  
-![alt text](https://github.com/AkbasLab/scenic-sumo/blob/main/Documentation/Pictures/SumoScenicHome.PNG)  
-
+This creates all the user interfaces. The sumo configurator scene needs to be saved before running any simulation. Below are all the interface scenes:  
+- ![alt text](https://github.com/AkbasLab/scenic-sumo/blob/main/Documentation/Pictures/SumoScenicHome.PNG)  
+   
+- ![alt text](https://github.com/AkbasLab/scenic-sumo/blob/main/Documentation/Pictures/SumoScenicHomeOptions.PNG)  
+   
+- ![alt text](https://github.com/AkbasLab/scenic-sumo/blob/main/Documentation/Pictures/ScenicSumoFileBrowser.PNG)  
+   
+- ![alt text](https://github.com/AkbasLab/scenic-sumo/blob/main/Documentation/Pictures/SumoScenicConfig.PNG)
 
 ### Config.py
 This is the command line options for SUMO. This file dictates what is available in the *Sumo Configurator* scene. If the line is commented out in the *Config.py* file than it will not appear in the scene. To find more arguments for this file go [here](https://github.com/AkbasLab/scenic-sumo/blob/main/Documentation/sumo-help.txt).
