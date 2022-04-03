@@ -65,3 +65,15 @@ class RandomCar(Car):
     """Random distance"""
     randomDistance: Range(0,1000)
     randomSpeed: Range(0,100)
+
+class Dist():
+    red = {
+        "red":10,
+        "blue":20,
+        "green":70
+    }
+    range: Range(0,100)
+    uniform: Uniform(0,1,2,3,4,5,6,7,8,9,10)
+    discreteRange: DiscreteRange(0,100)
+    normal: Normal(0,100)
+    options: Options(red)
