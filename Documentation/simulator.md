@@ -1,4 +1,5 @@
-# SumoSimulator
+# [simulator.py](https://github.com/AkbasLab/scenic-sumo/blob/main/simulator.py)
+## SumoSimulator.py
 ### Description 
 `SumoSimulator` creates an object that has the map, scenic file, and config file. It creates the simulations and passes them to the scenario information.  
 ### Syntax  
@@ -22,7 +23,7 @@ None
 None  
 
 ---
-# SumoSimulation  
+## SumoSimulation  
 ### Description  
 `SumoSimulation` reates a single simulation. Initailizes all the scenic actors and sets up the options for the sumo scene.  
 #### Syntax  
