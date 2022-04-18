@@ -5,7 +5,7 @@ import seaborn as sns
 
 i = 0
 y = []
-while(i < 1000):
+while(i < 50):
 
     scenario = scenic.scenarioFromFile("C:\\Users\\crump\\AppData\\Local\\Programs\\Python\\Python38\\Lib\\scenic\\simulators\\sumo\\Scenarios\\distribution.scenic")
 
@@ -14,9 +14,10 @@ while(i < 1000):
 
     for scenicObj in scene[0].objects:
         #Appends each scenarios value to a list 
-        y.append(scenicObj.options)
+        y.append(scenicObj.normal)
 
     i+=1
 #Displays list
-sns.displot(y, bins=40)
+sns.displot(y, bins=100)
 plt.show()
+#plt.savefig("filename.png")
