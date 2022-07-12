@@ -6,7 +6,7 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/sumoConfiguration.xsd">
 
     <input>
-        <net-file value="C:\Users\crump\OneDrive\Documents\GitHub\Scenic-Sumo\Map\CurvyRoad\CurvyRoad.net.xml"/>
+        <net-file value="/Users/kai/Documents/Github/scenic-sumo/Map/CurvyRoad/CurvyRoad.net.xml"/>
     </input>
 
 </configuration>

@@ -4,11 +4,11 @@
 <configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://sumo.dlr.de/xsd/netconvertConfiguration.xsd">
 
     <input>
-        <sumo-net-file value="C:\Users\crump\OneDrive\Documents\GitHub\Scenic-Sumo\Map\ThreeLane\ThreeLane.net.xml"/>
+        <sumo-net-file value="/Users/kai/Documents/Github/scenic-sumo/Map/ThreeLane/ThreeLane.net.xml"/>
     </input>
 
     <output>
-        <output-file value="C:\Users\crump\OneDrive\Documents\GitHub\Scenic-Sumo\Map\ThreeLane\CurveyRoad.net.xml"/>
+        <output-file value="/Users/kai/Documents/Github/scenic-sumo/Map/ThreeLane/CurveyRoad.net.xml"/>
     </output>
 
     <processing>
