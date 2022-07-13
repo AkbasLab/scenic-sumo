@@ -21,7 +21,7 @@ class Car:
     speed: -1
     speedMode: ""
     track: 0
-    color: ""
+    color: [0,0,0,1]
     size: 5
     changeSpeed: ""
     tau: 0
