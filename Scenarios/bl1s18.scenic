@@ -14,4 +14,4 @@ NPC1.lane = 1
 NPC1.xPos = 1632
 NPC1.yPos = 146
 NPC1.laneChanges = [0, 10]
-NPC1.color = [255,0,0,255]
+NPC1.color = [1,0,0,1]

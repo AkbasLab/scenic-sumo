@@ -6,7 +6,7 @@ from scenic.simulators.sumo.model import *
 ego = Car at 0 @ 0 
 ego.name = "v1"
 ego.route = ["492300616#0", "159453012"]
-ego.color = [255,0,0,255]
+ego.color = [1,0,0,1]
 ego.speed = 9
 ego.xPos = 1648
 ego.yPos = 88

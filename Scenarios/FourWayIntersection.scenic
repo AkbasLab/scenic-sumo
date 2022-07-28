@@ -5,7 +5,7 @@ ego.name = "v1"
 ego.route = ["e2", "-e4"]
 ego.distance = 10
 ego.speedMode = 32
-ego.color = [255, 0, 0, 255]
+ego.color = [1, 0, 0, 1]
 ego.parkPos = ["park", 20]
 
 car2 = Car at 0 @ 0
