@@ -1,0 +1,2 @@
+Warning: Vehicle '40'; junction collision with vehicle '68', lane=':3655880346_9_0', gap=-1.00', latGap=0.00, time=146.00 stage=move.
+Warning: Vehicle '40' performs emergency stop at the end of lane ':3655880346_9_0' because there is no connection to the next edge (decel=-12.01, offset=0.89), time=147.00.

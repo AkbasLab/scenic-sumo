@@ -1,8 +1,6 @@
 # Scenic-Sumo
-The integration of scenic and sumo to recreate atomic blocks.
-This project is a continuation of research in simulation-based approaches to autonomous systems validation.
-
-Q. Goss, Y. AlRashidi and M. İ. Akbaş, "Generation of Modular and Measurable Validation Scenarios for Autonomous Vehicles Using Accident Data," <em>2021 IEEE Intelligent Vehicles Symposium (IV)</em>, 2021, pp. 251-257, doi: 10.1109/IV48863.2021.9575506.
+This is a developmental version of SUMO Traffic Simulator interface for Scenic 2.0.0.
+This version of the Scenic-Sumo project is submitted to IEEE MOST 2023. 
 
 ---
 
@@ -13,11 +11,16 @@ Dr. Mustafa Ilhan Akbas `akbasm@erau.edu`<br>
 Quentin Goss `gossq@my.erau.edu`<br>
 
 **Undergraduate Students:**<br>
-Luke Crump `crumpl@my.erau.edu`
+Luke Crump `crumpl@my.erau.edu`<br>
+Kai Sniadach `sniadack@my.erau.edu`<br>
 
 Department of Electrical Engineering and Computer Science, Embry-Riddle Aeronautical University <br>
 
 ---
 
-A description of scenes in this project may be found in the documentionation folder. <a href=https://github.com/AkbasLab/scenic-sumo/blob/main/Documentation/SceneDescription.pdf>SceneDescription.pdf</a><br>
-Atomic blocks are described in a excel file in the documentation folder. <a href=https://github.com/AkbasLab/scenic-sumo/blob/main/Documentation/atomic_blocks.xlsx>atomic_blocks.xlsx</a>
+# Installation
+
+Add this `sumo` directory into `src/scenic/simulators` of your scenic installation, then recompile and reinstall your scenic module.
+
+Alternatively, install the wheel file at `dist/scenic-2.0.0-py3-none-any.whl` to run the code for this project.
+
