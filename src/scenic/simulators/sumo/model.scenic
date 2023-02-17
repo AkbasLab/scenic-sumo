@@ -47,20 +47,20 @@ class Pedestrian:
     color: [255,255,255,255]
     egoWaitAtXing: False
 
-class ParkingLot:
-    """Parking Lot"""
-    name: ""
-    lane: ""
-    startPos: 0
-    endPos: 0
-    capacity: 0 
-    angle: 90
+# class ParkingLot:
+#     """Parking Lot"""
+#     name: ""
+#     lane: ""
+#     startPos: 0
+#     endPos: 0
+#     capacity: 0 
+#     angle: 90
 
-class RandomTrips:
-    """Creates random cars that drive around the simulation"""
-    minDistance: 0
-    maxDistance: 0
-    spawnPeriod: 15
+# class RandomTrips:
+#     """Creates random cars that drive around the simulation"""
+#     minDistance: 0
+#     maxDistance: 0
+#     spawnPeriod: 15
 
 class RandomCar(Car): 
     """Random distance"""

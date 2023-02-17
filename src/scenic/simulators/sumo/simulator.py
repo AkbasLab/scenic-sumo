@@ -5,20 +5,109 @@ Luke Crump 1/2/2022
 
 try:
     import traci
+    import traci.constants as tc
 except ImportError as e:
     raise ModuleNotFoundError('Sumo scenes require the "traci" Python package') from e
 
 import scenic
 import os
 import xml.etree.ElementTree as xml
+
+
 from scenic.simulators.sumo.Utilities.config import SUMO
 import scenic.simulators.sumo.Utilities.randomTrips as randomTrips
 from scenic.core.scenarios import Scene
 
+
 import numpy as np
+# import pandas as pd
 
 def euclidean_distance(p0 : list, p1 : list) -> float:
     return np.sqrt((p0[0]-p1[0])**2 + (p0[1]-p1[1])**2)
+
+
+class TraCIClient:
+    def __init__(self, config : dict, priority : int = 1):
+        """
+        Barebones TraCI client.
+
+        --- Parameters ---
+        priority : int
+            Priority of clients. MUST BE UNIQUE
+        config : dict
+            SUMO arguments stored as a python dictionary.
+        """
+        
+        self._config = config
+        self._priority = priority
+        
+
+        self.connect()
+        return
+
+    @property
+    def priority(self) -> int:
+        """
+        Priority of TraCI client.
+        """
+        return self._priority
+
+    @property
+    def config(self) -> dict:
+        """
+        SUMO arguments stored as a python dictionary.
+        """
+        return self._config
+
+    def run_to_end(self):
+        """
+        Runs the client until the end.
+        """
+        while traci.simulation.getMinExpectedNumber() > 0:
+            traci.simulationStep()
+            # more traci commands
+        return
+
+    def close(self):
+        """
+        Closes the client.
+        """
+        traci.close()
+        return
+
+
+    def connect(self):
+        """
+        Start or initialize the TraCI connection.
+        """        
+        # Start the traci server with the first client
+        if self.priority == 1:
+            cmd = []
+
+            for key, val in self.config.items():
+                if key == "gui":
+                    sumo = "sumo"
+                    if val: sumo +="-gui"
+                    cmd.append(sumo)
+                    continue
+                
+                if key == "--remote-port":
+                    continue
+
+                cmd.append(key)
+                if val != "":
+                    cmd.append(str(val))
+                continue
+
+            traci.start(cmd,port=self.config["--remote-port"])
+            traci.setOrder(self.priority)
+            return
+        
+        # Initialize every client after the first.
+        traci.init(port=self.config["--remote-port"])
+        traci.setOrder(self.priority)
+        return
+
 
 class SumoSimulator:
     
@@ -29,20 +118,33 @@ class SumoSimulator:
             map_file (str): A *.sumocfg map file.
             scenic_file (str): A *.scenic file.
         """
+
         self.map_File = map_file
         self.scenic_file = scenic_file
         self.scenario_number = 0
         self.sumo_config = sumo_config
+        self.sumo_config["--net-file"] = map_file
 
         self._scenes = []
         self._sims = []
-        self.createSimulation()
+
+        TraCIClient(self.sumo_config)
+
+        if self.sumo_config["gui"]:
+            traci.gui.setSchema(traci.gui.DEFAULT_VIEW, "real world")
+
+        self.init_state_fn = "%s/init-state.xml" % os.path.dirname(map_file)
+        traci.simulation.saveState(self.init_state_fn)
+
+        # self.createSimulation()
+        return
 
     def createSimulation(self):
+        traci.simulation.loadState(self.init_state_fn)
         self.scenario_number += 1
         sim = SumoSimulation(
             self.scenario_number, 
-            self.map_File, 
+            # self.map_File, 
             self.scenic_file, 
             self.sumo_config
         )
@@ -59,10 +161,9 @@ class SumoSimulator:
         return self._sims
 
 class SumoSimulation:
-    
-    
 
-    def __init__(self, scenario_number : int, map_file : str, scenic_file : str, sumo_config : dict):
+
+    def __init__(self, scenario_number : int, scenic_file : str, sumo_config : dict):
         """Sets up an individual scenic simulation.
 
         Args:
@@ -73,7 +174,7 @@ class SumoSimulation:
             sumo_config (dict): A list of commands to control SUMO interface.
         """
         self.scenario_number = scenario_number
-        self.map_file = map_file
+        # self.map_file = map_file
         self.scenic_file = scenic_file
 
         self.__vehicle_list = []
@@ -84,15 +185,25 @@ class SumoSimulation:
         self._scene = self._scenario.generate(maxIterations = 2, verbosity = 0, feedback = 0)
 
         self._sumo_config = sumo_config
-        sumo_cmd = self.__setSumoParam(self.map_file, sumo_config)
-        self.__checkForUtilities(self._scene, self.map_file)
-        traci.start(sumo_cmd)        
+        # sumo_cmd = self.__setSumoParam(self.map_file, sumo_config)
+        # self.__checkForUtilities(self._scene, self.map_file)
+        # traci.start(sumo_cmd)        
 
-        if self._sumo_config["gui"]:
-            traci.gui.setSchema(traci.gui.DEFAULT_VIEW, "real world")
+        # if self._sumo_config["gui"]:
+        #     traci.gui.setSchema(traci.gui.DEFAULT_VIEW, "real world")
 
         self.__iterateScene(self._scene)
+
+
+        # Subscriptions for scoring
+        self.__init_scores()
+        self.__init_subscriptions()
+
         self.__runSimulation()
+
+        self._scores_data["ped_ego_wait_at_xing_event"] = self.ped_ego_wait_at_xing_event
+        self._score = self._scores_data
+        return
 
     @property
     def scene(self) -> Scene:
@@ -101,6 +212,90 @@ class SumoSimulation:
     @property
     def ped_ego_wait_at_xing_event(self) -> list:
         return self.__ped_ego_wait_at_xing_event
+    
+    @property
+    def score(self) -> dict:
+        return self._score
+
+    def __init_scores(self):
+        self._scores_data = {
+            "e_brake_partial" : 0.,
+            "e_brake_full" : 0.,
+            "e_stop" : 0.,
+            "collision" : 0.
+        }
+        return
+
+    def __init_subscriptions(self):
+        traci.vehicle.subscribe("ego", 
+            [tc.VAR_SPEED, tc.VAR_DECEL, tc.VAR_EMERGENCY_DECEL])
+        traci.simulation.subscribe([tc.VAR_TIME])
+
+        self._sub_data = {
+            "timestamp" : [],
+            "ego_speed" : [], 
+            "ego_decel" : [],
+            "ego_e_decel" : []
+        }
+        return
+
+    def __update_subscriptions_history(self):
+        timestamp = traci.simulation.getSubscriptionResults() \
+            [tc.VAR_TIME]
+
+        sub = traci.vehicle.getSubscriptionResults("ego")
+        ego_speed = sub[tc.VAR_SPEED]
+        ego_decel = sub[tc.VAR_DECEL]
+        ego_e_decel = sub[tc.VAR_EMERGENCY_DECEL]
+
+
+        # Add the newest subscriptions to the subscription history
+        self._sub_data["timestamp"].append(timestamp)
+        self._sub_data["ego_speed"].append(ego_speed)
+        self._sub_data["ego_decel"].append(ego_decel)
+        self._sub_data["ego_e_decel"].append(ego_e_decel)
+        return
+
+
+    def __score_update(self):
+        if len(self._sub_data["timestamp"]) < 2:
+            return
+
+        # Deceleration rate
+        t0, t1 = self._sub_data["timestamp"][-2:]
+        s0, s1 = self._sub_data["ego_speed"][-2:]
+        decel = self._sub_data["ego_decel"][-1]
+        
+        accel = (s1-s0)/(t1-t0)
+        accel = np.round(accel, 5)
+
+        # emergency braking
+        if accel < -decel:
+            e_decel = self._sub_data["ego_e_decel"][-1]
+            e_brake_score = ((-accel - decel) / e_decel) * 2
+
+            # print(e_brake_score)
+
+            if e_brake_score == 1:
+                self._scores_data["e_brake_full"] = 1.
+
+            elif (e_brake_score < 1) \
+                and (e_brake_score > self._scores_data["e_brake_partial"]):
+                self._scores_data["e_brake_partial"] = e_brake_score
+            
+            # Emergency Stop
+            elif accel < -e_decel:
+                e_stop_score = -accel/e_decel
+                if e_stop_score > self._scores_data["e_stop"]:
+                    self._scores_data["e_stop"] = e_stop_score
+
+        # COllision
+        if traci.simulation.getCollidingVehiclesNumber() > 0:
+            if "ego" in traci.simulation.getCollidingVehiclesIDList():
+                self._scores_data["collision"] = 1
+
+
+        return
 
 
     def __checkForUtilities(self, scene : tuple, folderName : str):
@@ -383,6 +578,10 @@ class SumoSimulation:
             if not "ego" in traci.vehicle.getIDList():
                 break
 
+            self.__update_subscriptions_history()
+            self.__score_update()
+
             traci.simulation.step()
 
-        traci.close()
+        return
+        # traci.close()
