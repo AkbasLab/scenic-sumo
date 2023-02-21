@@ -547,6 +547,7 @@ class SumoSimulation:
         Runs the simulation to completion
         """
         
+
         while traci.simulation.getMinExpectedNumber() > 0:
             
             # Pedestrian
@@ -575,10 +576,14 @@ class SumoSimulation:
                     traci.vehicle.slowDown(scenicObj.name, scenicObj.changeSpeed[0], scenicObj.changeSpeed[1])
 
             # End the sim if the ego doesn't exist
-            if not "ego" in traci.vehicle.getIDList():
-                break
+            # if not "ego" in traci.vehicle.getIDList():
+            #     break
 
-            self.__update_subscriptions_history()
+            try:
+                self.__update_subscriptions_history()
+            except KeyError:
+                # Ego is no longer in sim
+                break
             self.__score_update()
 
             traci.simulation.step()
