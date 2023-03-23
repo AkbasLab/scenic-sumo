@@ -456,7 +456,6 @@ class SumoSimulation:
                                 scenicObj.yPos, angle = scenicObj.angle, keepRoute = scenicObj.vehPlacement)
         
         if scenicObj.speed != -1:
-            traci.vehicle.setMaxSpeed(scenicObj.name, scenicObj.speed)
             traci.vehicle.setSpeed(scenicObj.name, scenicObj.speed)
 
         if scenicObj.lane != 0:
@@ -468,8 +467,8 @@ class SumoSimulation:
         if scenicObj.color != "":
             traci.vehicle.setColor(scenicObj.name, scenicObj.color)
 
-        if scenicObj.changeSpeed != "" and scenicObj.changeSpeed[2] == 0:
-            traci.vehicle.slowDown(scenicObj.name, scenicObj.changeSpeed[0], scenicObj.changeSpeed[1])
+        if scenicObj.changeSpeed != "" and scenicObj.changeSpeed[1] == 0:
+            traci.vehicle.setSpeed(scenicObj.name, scenicObj.changeSpeed[0])
         
         if scenicObj.tau != 0:
             traci.vehicle.setTau(scenicObj.name, scenicObj.tau)
@@ -571,13 +570,11 @@ class SumoSimulation:
                 scenicObj.laneChanges[1] == traci.simulation.getTime():
                     traci.vehicle.changeLane(scenicObj.name, scenicObj.laneChanges[0], 3)
 
-                if scenicObj.changeSpeed != "" and \
-                    scenicObj.changeSpeed[2] == traci.simulation.getTime():
-                    traci.vehicle.slowDown(scenicObj.name, scenicObj.changeSpeed[0], scenicObj.changeSpeed[1])
+                
 
-            # End the sim if the ego doesn't exist
-            # if not "ego" in traci.vehicle.getIDList():
-            #     break
+                if scenicObj.changeSpeed != "" and \
+                    scenicObj.changeSpeed[1] == traci.simulation.getTime():
+                    traci.vehicle.setSpeed(scenicObj.name, scenicObj.changeSpeed[0])
 
             try:
                 self.__update_subscriptions_history()
