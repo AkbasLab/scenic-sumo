@@ -548,6 +548,10 @@ class SumoSimulation:
         
 
         while traci.simulation.getMinExpectedNumber() > 0:
+
+            # End if ego is not in the scene
+            if not "ego" in traci.vehicle.getIDList():
+                break
             
             # Pedestrian
             for i, pedObj in enumerate(self.__pedestrian_list):
