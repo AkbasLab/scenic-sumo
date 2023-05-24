@@ -587,6 +587,10 @@ class SumoSimulation:
                 break
             self.__score_update()
 
+            if traci.simulation.getTime() > 3600:
+                print("Sim time over 1 hour. Ending Scene.")
+                return
+            
             traci.simulation.step()
 
         return
